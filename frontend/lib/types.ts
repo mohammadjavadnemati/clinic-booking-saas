@@ -22,3 +22,40 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
+
+export interface Business {
+  id: string;
+  name: string;
+  description?: string;
+  address?: string;
+  phoneNumber?: string;
+  logoUrl?: string;
+}
+
+export interface Service {
+  id: string;
+  businessId: string;
+  name: string;
+  description?: string;
+  price: number;
+  durationMinutes: number;
+  isActive: boolean;
+}
+
+export interface Specialist {
+  id: string;
+  businessId: string;
+  fullName: string;
+  imageUrl?: string;
+  specialty?: string;
+  description?: string;
+  isActive: boolean;
+}
+
+export interface WorkingHour {
+  id: string;
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+  isDayOff: boolean;
+}

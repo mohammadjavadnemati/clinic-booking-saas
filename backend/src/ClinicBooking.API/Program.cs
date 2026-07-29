@@ -95,3 +95,5 @@ app.MapControllers();
 
 app.Run();
 
+// Admin@12345
+// admin@enterprisecommerce.com
