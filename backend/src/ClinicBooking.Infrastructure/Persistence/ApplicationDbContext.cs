@@ -12,6 +12,10 @@ namespace ClinicBooking.Infrastructure.Persistence
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+        public DbSet<Business> Businesses { get; set; } = null!;
+        public DbSet<Service> Services { get; set; } = null!;
+        public DbSet<Specialist> Specialists { get; set; } = null!;
+        public DbSet<WorkingHour> WorkingHours { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +33,40 @@ namespace ClinicBooking.Infrastructure.Persistence
                 entity.HasOne(rt => rt.User)
                       .WithMany()
                       .HasForeignKey(rt => rt.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Business>(entity =>
+            {
+                entity.Property(b => b.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<Service>(entity =>
+            {
+                entity.Property(s => s.Name).IsRequired();
+                entity.Property(s => s.Price).HasColumnType("decimal(10,2)");
+
+                entity.HasOne(s => s.Business)
+                      .WithMany(b => b.Services)
+                      .HasForeignKey(s => s.BusinessId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Specialist>(entity =>
+            {
+                entity.Property(s => s.FullName).IsRequired();
+
+                entity.HasOne(s => s.Business)
+                      .WithMany(b => b.Specialists)
+                      .HasForeignKey(s => s.BusinessId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<WorkingHour>(entity =>
+            {
+                entity.HasOne(w => w.Specialist)
+                      .WithMany(s => s.WorkingHours)
+                      .HasForeignKey(w => w.SpecialistId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
         }
