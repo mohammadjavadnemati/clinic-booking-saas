@@ -1,6 +1,7 @@
 using ClinicBooking.Application.DTOs.Auth;
 using ClinicBooking.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicBooking.API.Controllers
 {
@@ -62,6 +63,23 @@ namespace ClinicBooking.API.Controllers
         {
             await _authService.RevokeRefreshTokenAsync(refreshToken);
             return Ok(new { message = "Logged out successfully." });
+        }
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult GetCurrentUser()
+        {
+            var userId = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+            var email = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email)?.Value;
+            var fullName = User.FindFirst("fullName")?.Value;
+            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
+            return Ok(new
+            {
+                id = userId,
+                fullName,
+                email,
+                role
+            });
         }
     }
 }

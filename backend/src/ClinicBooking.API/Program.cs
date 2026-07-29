@@ -17,6 +17,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.MapInboundClaims = false; // <-- این خط رو اضافه کن
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
