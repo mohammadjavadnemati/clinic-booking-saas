@@ -16,6 +16,7 @@ namespace ClinicBooking.Infrastructure.Persistence
         public DbSet<Service> Services { get; set; } = null!;
         public DbSet<Specialist> Specialists { get; set; } = null!;
         public DbSet<WorkingHour> WorkingHours { get; set; } = null!;
+        public DbSet<Booking> Bookings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,6 +69,31 @@ namespace ClinicBooking.Infrastructure.Persistence
                       .WithMany(s => s.WorkingHours)
                       .HasForeignKey(w => w.SpecialistId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                entity.HasOne(b => b.Business)
+                    .WithMany()
+                    .HasForeignKey(b => b.BusinessId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(b => b.Service)
+                    .WithMany()
+                    .HasForeignKey(b => b.ServiceId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(b => b.Specialist)
+                    .WithMany()
+                    .HasForeignKey(b => b.SpecialistId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(b => b.Customer)
+                    .WithMany()
+                    .HasForeignKey(b => b.CustomerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Index for fast conflict-checking queries
+                entity.HasIndex(b => new { b.SpecialistId, b.StartTime, b.EndTime });
             });
         }
     }

@@ -71,6 +71,7 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 
@@ -97,3 +98,9 @@ app.Run();
 
 // Admin@12345
 // admin@enterprisecommerce.com
+
+// {
+//   "fullName": "علی رضایی",
+//   "email": "ali@test.com",
+//   "password": "Test1234!"
+// }
