@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/api-client";
-import { Business, Service, Specialist, WorkingHour } from "@/lib/types";
+import { Business, Service, Specialist, WorkingHour, Booking } from "@/lib/types";
 import { getServicesByBusiness } from "@/lib/api/public";
+
 
 // ---- Business ----
 export async function getMyBusiness(): Promise<Business | null> {
@@ -74,4 +75,21 @@ export async function setSpecialistWorkingHours(
   workingHours: WorkingHour[]
 ): Promise<void> {
   await apiClient.put(`/specialist/${specialistId}/working-hours`, { workingHours });
+}
+
+
+export async function getBusinessBookings(filters?: {
+  date?: string; // "yyyy-MM-dd"
+  specialistId?: string;
+  status?: string;
+}): Promise<Booking[]> {
+  const { data } = await apiClient.get<Booking[]>("/booking/business-bookings", {
+    params: filters,
+  });
+  return data;
+}
+
+export async function updateBookingStatus(id: string, status: string): Promise<Booking> {
+  const { data } = await apiClient.put<Booking>(`/booking/${id}/status`, { status });
+  return data;
 }

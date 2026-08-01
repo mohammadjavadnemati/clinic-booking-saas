@@ -7,7 +7,8 @@ import { useAuth } from "@/lib/auth-context";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/admin/business", label: "Business info" },
+  { href: "/admin/bookings", label: "Bookings" },
+  { href: "/admin/business", label: "Business Info" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/specialists", label: "Specialists" },
 ];
