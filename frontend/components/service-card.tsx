@@ -1,28 +1,38 @@
+import Link from "next/link";
 import { Service } from "@/lib/types";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface ServiceCardProps {
   service: Service;
+  businessId: string;
 }
 
-export function ServiceCard({ service }: ServiceCardProps) {
+export function ServiceCard({ service, businessId }: ServiceCardProps) {
   return (
-    <div className="rounded-2xl border border-[#DCE8E7] bg-white p-5 transition hover:border-[#1F6E71]/30">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[15px] font-medium text-[#14262A]">{service.name}</h3>
-        <span className="shrink-0 rounded-full bg-[#1F6E71]/10 px-2.5 py-0.5 text-[13px] font-medium text-[#1F6E71]">
-          ${service.price.toFixed(2)}
-        </span>
-      </div>
-
-      {service.description && (
-        <p className="mt-2 text-[13px] leading-5 text-[#5C7377]">
-          {service.description}
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">{service.name}</CardTitle>
+          <Badge variant="secondary">${service.price.toFixed(2)}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {service.description && (
+          <p className="text-sm text-gray-500">{service.description}</p>
+        )}
+        <p className="mt-2 text-sm text-gray-400">
+          Duration: {service.durationMinutes} min
         </p>
-      )}
-
-      <p className="mt-3 text-[12px] text-[#9AAAAD]">
-        {service.durationMinutes} min
-      </p>
-    </div>
+      </CardContent>
+      <CardFooter>
+        <Button asChild size="sm">
+          <Link href={`/business/${businessId}/book?serviceId=${service.id}`}>
+            Book Now
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }

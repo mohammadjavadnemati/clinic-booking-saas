@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { user, isLoading, logout } = useAuth();
@@ -88,6 +89,14 @@ export default function ProfilePage() {
               </p>
             </div>
           </div>
+          {user.role === "Customer" && (
+  <Link
+    href="/bookings"
+    className="block w-full rounded-md border p-2 text-center text-sm font-medium hover:bg-gray-50"
+  >
+    View My Bookings
+  </Link>
+)}
 
           <button
             type="button"

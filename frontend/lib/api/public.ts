@@ -20,3 +20,13 @@ export async function getSpecialistWorkingHours(specialistId: string): Promise<W
   const { data } = await apiClient.get<WorkingHour[]>(`/specialist/${specialistId}/working-hours`);
   return data;
 }
+export async function getAvailableSlots(
+  specialistId: string,
+  serviceId: string,
+  date: string // "yyyy-MM-dd"
+): Promise<string[]> {
+  const { data } = await apiClient.get<string[]>("/booking/available-slots", {
+    params: { specialistId, serviceId, date },
+  });
+  return data;
+}

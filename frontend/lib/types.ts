@@ -59,3 +59,19 @@ export interface WorkingHour {
   endTime: string;
   isDayOff: boolean;
 }
+export interface Booking {
+  id: string;
+  businessId: string;
+  serviceId: string;
+  serviceName: string;
+  specialistId: string;
+  specialistName: string;
+  customerId: string;
+  customerName: string;
+  customerEmail: string;
+  startTime: string; // ISO UTC
+  endTime: string;   // ISO UTC
+  status: "Pending" | "Confirmed" | "Cancelled" | "Completed" | "Rejected";
+  customerNote?: string;
+  createdAt: string;
+}

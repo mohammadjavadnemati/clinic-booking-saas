@@ -117,7 +117,7 @@ export default function BusinessProfilePage() {
           ) : (
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {services.map((service) => (
-                <ServiceCard key={service.id} service={service} />
+                <ServiceCard key={service.id} service={service} businessId={business.id} />
               ))}
             </div>
           )}
