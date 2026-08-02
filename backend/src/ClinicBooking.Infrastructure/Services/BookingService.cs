@@ -3,6 +3,7 @@ using ClinicBooking.Application.Interfaces;
 using ClinicBooking.Domain.Entities;
 using ClinicBooking.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Hangfire;
 
 namespace ClinicBooking.Infrastructure.Services
 {
@@ -109,6 +110,8 @@ namespace ClinicBooking.Infrastructure.Services
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
+            BackgroundJob.Enqueue<IBookingNotificationService>(
+                service => service.SendBookingCreatedNotificationAsync(booking.Id));
 
             return await MapToDtoAsync(booking);
         }
@@ -174,7 +177,8 @@ namespace ClinicBooking.Infrastructure.Services
             booking.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
-
+            BackgroundJob.Enqueue<IBookingNotificationService>(
+                service => service.SendBookingStatusChangedNotificationAsync(booking.Id));
             return MapToDto(booking);
         }
 

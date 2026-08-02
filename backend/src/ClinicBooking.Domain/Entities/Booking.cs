@@ -22,6 +22,7 @@ namespace ClinicBooking.Domain.Entities
 
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
         public string? CustomerNote { get; set; }
+        public bool ReminderSent { get; set; } = false;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
@@ -30,5 +31,6 @@ namespace ClinicBooking.Domain.Entities
         public Service Service { get; set; } = null!;
         public Specialist Specialist { get; set; } = null!;
         public User Customer { get; set; } = null!;
+        
     }
 }

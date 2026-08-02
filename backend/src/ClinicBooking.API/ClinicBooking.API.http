@@ -1,6 +1,6 @@
-@ClinicBooking.API_HostAddress = http://localhost:5050
+@ClinicBooking.API.API_HostAddress = http://localhost:6051
 
-GET {{ClinicBooking.API_HostAddress}}/weatherforecast/
+GET {ClinicBooking.API.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

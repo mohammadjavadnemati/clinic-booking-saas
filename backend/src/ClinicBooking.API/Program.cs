@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi;
+using Hangfire;
+using Hangfire.PostgreSql;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,7 +74,17 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddScoped<IBookingService, BookingService>();
+// Register application services
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IBookingNotificationService, BookingNotificationService>();
+builder.Services.AddScoped<IScheduledJobsService, ScheduledJobsService>();
 
+// Configure Hangfire with PostgreSQL storage
+builder.Services.AddHangfire(config => config
+    .UsePostgreSqlStorage(options =>
+        options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))));
+
+builder.Services.AddHangfireServer();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -91,7 +103,19 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();   
 app.UseAuthorization();
+// Hangfire Dashboard (accessible at /hangfire) — for monitoring jobs during development
+app.UseHangfireDashboard("/hangfire");
 
+// Register recurring jobs
+RecurringJob.AddOrUpdate<IScheduledJobsService>(
+    "send-upcoming-reminders",
+    service => service.SendUpcomingRemindersAsync(),
+    "0 * * * *"); // every hour, at minute 0
+
+RecurringJob.AddOrUpdate<IScheduledJobsService>(
+    "cleanup-expired-pending-bookings",
+    service => service.CleanupExpiredPendingBookingsAsync(),
+    "*/30 * * * *"); // every 30 minutes
 app.MapControllers();
 
 app.Run();
