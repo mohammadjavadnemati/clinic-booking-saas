@@ -17,7 +17,7 @@ namespace ClinicBooking.Infrastructure.Persistence
         public DbSet<Specialist> Specialists { get; set; } = null!;
         public DbSet<WorkingHour> WorkingHours { get; set; } = null!;
         public DbSet<Booking> Bookings { get; set; } = null!;
-
+        public DbSet<Payment> Payments { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -69,6 +69,15 @@ namespace ClinicBooking.Infrastructure.Persistence
                       .WithMany(s => s.WorkingHours)
                       .HasForeignKey(w => w.SpecialistId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.Property(p => p.Amount).HasColumnType("decimal(10,2)");
+
+                entity.HasOne(p => p.Booking)
+                    .WithMany()
+                    .HasForeignKey(p => p.BookingId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<Booking>(entity =>
             {

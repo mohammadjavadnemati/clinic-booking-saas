@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.OpenApi;
 using Hangfire;
 using Hangfire.PostgreSql;
+using ClinicBooking.Infrastructure.Payments;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,8 @@ builder.Services.AddScoped<IBusinessService, BusinessService>();
 builder.Services.AddScoped<IServiceManagementService, ServiceManagementService>();
 builder.Services.AddScoped<ISpecialistService, SpecialistService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IPaymentGateway, MockPaymentGateway>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
