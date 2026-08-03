@@ -75,3 +75,24 @@ export interface Booking {
   customerNote?: string;
   createdAt: string;
 }
+export interface BookingsPerDay {
+  date: string;
+  count: number;
+}
+
+export interface PopularService {
+  serviceName: string;
+  bookingCount: number;
+}
+
+export interface DashboardStats {
+  totalBookings: number;
+  pendingBookings: number;
+  confirmedBookings: number;
+  completedBookings: number;
+  cancelledOrRejectedBookings: number;
+  totalRevenue: number;
+  newCustomersThisMonth: number;
+  bookingsLast30Days: BookingsPerDay[];
+  topServices: PopularService[];
+}

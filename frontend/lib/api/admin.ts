@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/api-client";
-import { Business, Service, Specialist, WorkingHour, Booking } from "@/lib/types";
+import { Business, Service, Specialist, WorkingHour, Booking, DashboardStats } from "@/lib/types";
 import { getServicesByBusiness } from "@/lib/api/public";
+
 
 
 // ---- Business ----
@@ -91,5 +92,11 @@ export async function getBusinessBookings(filters?: {
 
 export async function updateBookingStatus(id: string, status: string): Promise<Booking> {
   const { data } = await apiClient.put<Booking>(`/booking/${id}/status`, { status });
+  return data;
+}
+
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const { data } = await apiClient.get<DashboardStats>("/analytics/dashboard");
   return data;
 }
