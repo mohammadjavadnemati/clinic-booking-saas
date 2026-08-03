@@ -49,6 +49,13 @@ namespace ClinicBooking.API.Controllers
             var result = await _businessService.CreateAsync(ownerId, request);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll()
+        {
+            var businesses = await _businessService.GetAllAsync();
+            return Ok(businesses);
+        }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "BusinessOwner")]

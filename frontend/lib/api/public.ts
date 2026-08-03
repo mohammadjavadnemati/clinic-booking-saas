@@ -30,3 +30,7 @@ export async function getAvailableSlots(
   });
   return data;
 }
+export async function getAllBusinesses(): Promise<Business[]> {
+  const { data } = await apiClient.get<Business[]>("/business");
+  return data;
+}

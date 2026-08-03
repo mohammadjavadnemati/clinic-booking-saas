@@ -61,6 +61,11 @@ namespace ClinicBooking.Infrastructure.Services
 
             return MapToDto(business);
         }
+        public async Task<List<BusinessDto>> GetAllAsync()
+        {
+            var businesses = await _context.Businesses.ToListAsync();
+            return businesses.Select(MapToDto).ToList();
+        }
 
         private static BusinessDto MapToDto(Business b) => new()
         {

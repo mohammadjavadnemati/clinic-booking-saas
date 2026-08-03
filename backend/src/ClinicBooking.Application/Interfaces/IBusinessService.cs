@@ -8,5 +8,6 @@ namespace ClinicBooking.Application.Interfaces
         Task<BusinessDto?> GetByIdAsync(Guid id);
         Task<BusinessDto?> GetByOwnerIdAsync(Guid ownerId);
         Task<BusinessDto> UpdateAsync(Guid id, Guid ownerId, UpdateBusinessRequest request);
+        Task<List<BusinessDto>> GetAllAsync();
     }
 }
