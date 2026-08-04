@@ -96,3 +96,14 @@ export interface DashboardStats {
   bookingsLast30Days: BookingsPerDay[];
   topServices: PopularService[];
 }
+
+export interface Payment {
+  id: string;
+  bookingId: string;
+  amount: number;
+  currency: string;
+  status: "Pending" | "Succeeded" | "Failed";
+  gatewayTransactionId?: string;
+  createdAt: string;
+  paidAt?: string;
+}

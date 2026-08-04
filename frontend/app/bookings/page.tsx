@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-context";
-import { getMyBookings } from "@/lib/api/customer";
+import { getMyBookings, initiatePayment } from "@/lib/api/customer";
 import { Booking } from "@/lib/types";
 
 const statusStyles: Record<Booking["status"], string> = {
@@ -20,6 +21,7 @@ export default function MyBookingsPage() {
   const router = useRouter();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [payingId, setPayingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -36,6 +38,17 @@ export default function MyBookingsPage() {
     }
     if (user) load();
   }, [user, authLoading, router]);
+
+  const handlePayNow = async (bookingId: string) => {
+    setPayingId(bookingId);
+    try {
+      const { redirectUrl } = await initiatePayment(bookingId);
+      window.location.href = redirectUrl;
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to start payment.");
+      setPayingId(null);
+    }
+  };
 
   if (authLoading || isLoading) {
     return (
@@ -93,6 +106,16 @@ export default function MyBookingsPage() {
                   <p className="mt-2 border-t border-[#DCE8E7] pt-2 text-[13px] text-[#9AAAAD]">
                     Note: {booking.customerNote}
                   </p>
+                )}
+
+                {booking.status === "Confirmed" && (
+                  <button
+                    onClick={() => handlePayNow(booking.id)}
+                    disabled={payingId === booking.id}
+                    className="mt-3 flex h-9 items-center justify-center rounded-lg bg-[#1F6E71] px-4 text-[13px] font-medium text-white transition hover:bg-[#175457] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {payingId === booking.id ? "Redirecting…" : "Pay now"}
+                  </button>
                 )}
               </div>
             ))}
