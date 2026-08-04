@@ -34,6 +34,11 @@ Built as a portfolio/demo project with production-grade architecture, designed t
 - Clean, layered backend architecture ready to scale into multi-tenant SaaS
 
 ---
+## Screenshots
+
+| Customer Booking Flow | Admin Dashboard |
+|---|---|
+| ![Booking](docs/screenshots/booking-flow.png) | ![Dashboard](docs/screenshots/dashboard.png) |
 
 ## Tech Stack
 
