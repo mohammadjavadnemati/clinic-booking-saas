@@ -36,7 +36,7 @@ Built as a portfolio/demo project with production-grade architecture, designed t
 ---
 ## Screenshots
 
-| Customer Booking Flow | Admin Dashboard |
+| Admin Booking Confirmation | Admin Dashboard |
 |---|---|
 | ![Booking](docs/screenshots/booking-flow.png) | ![Dashboard](docs/screenshots/dashboard.png) |
 
