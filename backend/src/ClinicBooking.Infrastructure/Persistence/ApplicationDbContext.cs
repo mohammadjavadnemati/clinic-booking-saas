@@ -40,6 +40,7 @@ namespace ClinicBooking.Infrastructure.Persistence
             modelBuilder.Entity<Business>(entity =>
             {
                 entity.Property(b => b.Name).IsRequired();
+                entity.HasIndex(b => b.OwnerId).IsUnique();
             });
 
             modelBuilder.Entity<Service>(entity =>

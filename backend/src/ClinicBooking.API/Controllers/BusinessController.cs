@@ -46,8 +46,15 @@ namespace ClinicBooking.API.Controllers
         {
             var ownerId = User.GetUserId();
 
-            var result = await _businessService.CreateAsync(ownerId, request);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            try
+            {
+                var result = await _businessService.CreateAsync(ownerId, request);
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
         [HttpGet]
         [AllowAnonymous]

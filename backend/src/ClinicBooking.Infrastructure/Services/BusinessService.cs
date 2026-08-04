@@ -17,6 +17,10 @@ namespace ClinicBooking.Infrastructure.Services
 
         public async Task<BusinessDto> CreateAsync(Guid ownerId, CreateBusinessRequest request)
         {
+            var existing = await _context.Businesses.AnyAsync(b => b.OwnerId == ownerId);
+            if (existing)
+                throw new InvalidOperationException("You already have a business registered under your account.");
+
             var business = new Business
             {
                 OwnerId = ownerId,
